@@ -66,6 +66,10 @@
                     <li>
                         <button id="nav-movies-button" class="nav-button bg-gray-800 hover:bg-blue-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show Movies">Movies</button>
                     </li>
+                    <li>
+                        <!-- New TV Series Button -->
+                        <button id="nav-tvseries-button" class="nav-button bg-gray-800 hover:bg-purple-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show TV Series">TV Series</button>
+                    </li>
                 </ul>
                 <div class="relative w-full sm:w-64">
                     <input type="text" id="search-input" placeholder="Search movies..." class="w-full bg-gray-700 text-gray-200 placeholder-gray-400 py-2 pl-4 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200" aria-label="Search movies">
@@ -371,6 +375,7 @@
 
         const navHomeButton = document.getElementById('nav-home-button');
         const navMoviesButton = document.getElementById('nav-movies-button');
+        const navTvSeriesButton = document.getElementById('nav-tvseries-button'); // Get reference to the new TV Series button
         const genreButtonsContainer = document.getElementById('genre-buttons-container');
 
         // Hardcoded strings for English
@@ -1461,6 +1466,15 @@
                 history.pushState(null, '', '/movies/'); // Go to movie list (Layer 1)
             }
             handleLocationChange(); // Manually trigger
+        });
+
+        // Event listener for the new TV Series button
+        navTvSeriesButton.addEventListener('click', () => {
+            triggerAd();
+            // In a deployed environment, this would navigate to the TV series app.
+            // In the sandbox, direct navigation between 'apps' might be restricted.
+            // However, this is the correct implementation for a live site.
+            window.location.href = 'https://ericafilme.pages.dev/tvseries/';
         });
     </script>
 </body>
