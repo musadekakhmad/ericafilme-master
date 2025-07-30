@@ -1,7 +1,8 @@
 // config.js
 // File ini berisi konfigurasi global yang dapat digunakan di seluruh aplikasi.
 
-export const ADSTERRA_DIRECT_LINKS = [
+// Mendefinisikan variabel global untuk tautan iklan
+window.ADSTERRA_DIRECT_LINKS = [
     'https://discreetisabella.com/g77bpz0g?key=f1cc7147d1c59d932b6186896ab8854c',
     'https://discreetisabella.com/vttzzi1n?key=bfc8d7d57de835830a0d72fbe7a47be1',
     'https://discreetisabella.com/y5fc24f7?key=d6efa8068c5da148ed5cf346ffa62290',
