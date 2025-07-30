@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Initial title tag for the TV series list page. Will be dynamically updated for TV series details. -->
     <title>Erica Filme - TV Series</title>
     <!-- Favicon: Using SVG emoji for the TV icon. More concise and no external files needed. -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📺</text></svg>">
 
-    <!-- Description and Keywords for SEO -->
+    <!-- Description and Keywords for SEO of the TV series list page. Will be dynamically updated for TV series details. -->
     <meta name="description" content="Erica Filme: Stream thousands of free TV series online in HD quality. Discover the latest popular TV shows, classic series, and new episodes with no subscription required. Your ultimate destination for unlimited TV series entertainment, available on any device. Start watching now!">
     <meta name="keywords" content="Erica Filme, free TV series, watch TV series online, HD streaming, latest TV shows, popular TV series, no subscription, free entertainment, online TV, TV series streaming site, watch series, full HD TV series, free streaming platform, best free TV series, online entertainment, TV series database">
 
-    <!-- Open Graph Meta Tags for Facebook, WhatsApp, etc. -->
+    <!-- Open Graph Meta Tags for Facebook, WhatsApp, etc. Will be dynamically updated for TV series details. -->
     <meta property="og:title" content="Erica Filme - TV Series">
     <meta property="og:description" content="Erica Filme: Stream thousands of free TV series online in HD quality. Discover the latest popular TV shows, classic series, and new episodes with no subscription required. Your ultimate destination for unlimited TV series entertainment, available on any device. Start watching now!">
     <meta property="og:image" content="https://live.staticflickr.com/65535/54686927986_3bc07303a2_b.jpg">
@@ -21,7 +22,7 @@
     <meta property="og:type" content="website">
     <meta property="fb:app_id" content="61577842845885">
 
-    <!-- Canonical Tag for SEO -->
+    <!-- Canonical Tag for SEO. Will be dynamically updated for TV series details. -->
     <link rel="canonical" href="https://ericafilme.pages.dev/tvseries/">
 
     <!-- Tailwind CSS CDN - For production, it's recommended to use a custom Tailwind build and host it locally. -->
@@ -33,7 +34,7 @@
     <!-- Custom CSS (if any) -->
     <link rel="stylesheet" href="../style.css"> <!-- Updated path to shared style.css -->
 </head>
-<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col font-roboto">
     <!-- NoScript message for users with JavaScript disabled -->
     <noscript>
         <div class="fixed inset-0 bg-gray-900 text-white flex items-center justify-center p-4 z-50">
@@ -56,13 +57,21 @@
                 <h1 class="text-5xl font-bold whitespace-nowrap rainbow-text">Erica Filme</h1>
                 </a>
             </div>
-            <nav class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full sm:w-auto">
-                <div class="flex w-full sm:w-auto sm:space-x-6">
-                    <!-- New Home Button -->
-                    <button id="nav-home-button" class="nav-button bg-gray-800 hover:bg-green-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Navigate to Home">Home</button>
-                    <!-- Removed Movies Button -->
-                    <button id="nav-tvseries-button" class="nav-button bg-gray-800 hover:bg-rose-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show TV Series">TV Series</button>
-                </div>
+            <nav class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full sm:w-auto" aria-label="Main Navigation">
+                <ul class="flex w-full sm:w-auto sm:space-x-6 list-none p-0 m-0">
+                    <li>
+                        <!-- New Home Button -->
+                        <button id="nav-home-button" class="nav-button bg-gray-800 hover:bg-green-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Navigate to Home">Home</button>
+                    </li>
+                    <li>
+                        <!-- New Movies Button -->
+                        <button id="nav-movies-button" class="nav-button bg-gray-800 hover:bg-blue-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show Movies">Movies</button>
+                    </li>
+                    <li>
+                        <!-- TV Series Button -->
+                        <button id="nav-tvseries-button" class="nav-button bg-gray-800 hover:bg-purple-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show TV Series">TV Series</button>
+                    </li>
+                </ul>
                 <div class="relative w-full sm:w-64">
                     <input type="text" id="search-input" placeholder="Search TV series..." class="w-full bg-gray-700 text-gray-200 placeholder-gray-400 py-2 pl-4 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200" aria-label="Search TV series">
                     <button id="search-button" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-200" aria-label="Perform search">
@@ -80,12 +89,10 @@
     <main class="flex-grow px-4 pt-4 pb-12 max-w-[1344px] mx-auto">
         <!-- Layer 1: TV Series Thumbnails -->
         <section id="layer-1" class="layer-1">
-            <!-- Removed all Movie sections -->
-
             <!-- TV Series Airing Today Section -->
             <div id="airing-today-tv-section" class="mb-6">
                 <h2 class="text-3xl font-bold text-gray-100 mb-8 text-center"><span id="section-title-airing-today-tv">TV Series Airing Today</span></h2>
-                <div id="movie-grid-airing-today-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
+                <div id="media-grid-airing-today-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
                     <!-- TV Series Airing Today thumbnails will be loaded here by JS -->
                 </div>
                 <div class="flex justify-center mt-10">
@@ -102,7 +109,7 @@
             <!-- On The Air TV Series Section -->
             <div id="on-tv-section" class="mb-6">
                 <h2 class="text-3xl font-bold text-gray-100 mb-8 text-center"><span id="section-title-on-tv">On The Air TV Series</span></h2>
-                <div id="movie-grid-on-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
+                <div id="media-grid-on-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
                     <!-- On The Air TV Series thumbnails will be loaded here by JS -->
                 </div>
                 <div class="flex justify-center mt-10">
@@ -119,7 +126,7 @@
             <!-- Popular TV Series Section -->
             <div id="popular-tv-section" class="mb-12">
                 <h2 class="text-3xl font-bold text-gray-100 mb-8 text-center"><span id="section-title-popular-tv">Popular TV Series</span></h2>
-                <div id="movie-grid-popular-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
+                <div id="media-grid-popular-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
                     <!-- Popular TV Series thumbnails will be loaded here by JS -->
                 </div>
                 <div class="flex justify-center mt-10">
@@ -136,7 +143,7 @@
             <!-- Top Rated TV Series Section -->
             <div id="top-rated-tv-section" class="mb-12">
                 <h2 class="text-3xl font-bold text-gray-100 mb-8 text-center"><span id="section-title-top-rated-tv">Top Rated TV Series</span></h2>
-                <div id="movie-grid-top-rated-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
+                <div id="media-grid-top-rated-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[500px]">
                     <!-- Top Rated TV Series thumbnails will be loaded here by JS -->
                 </div>
                 <div class="flex justify-center mt-10">
@@ -160,7 +167,7 @@
             <div id="loading-spinner-layer2" class="flex justify-center items-center h-96">
                 <div class="spinner"></div>
             </div>
-            <div id="movie-detail-content" class="hidden">
+            <div id="media-detail-content" class="hidden">
                 <!-- Content will be dynamically loaded here by JS -->
             </div>
 
@@ -182,7 +189,7 @@
             <!-- Similar TV Series Recommendations -->
             <div class="mt-8 text-center">
                 <h3 class="text-2xl font-bold text-gray-100 mb-4">Similar Titles You Might Like:</h3>
-                <div id="similar-movies-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div id="similar-media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     <!-- Similar TV series thumbnails will be loaded here by JS -->
                 </div>
                 <div id="loading-spinner-similar" class="hidden flex justify-center items-center py-8">
@@ -217,7 +224,7 @@
             <!-- Dynamic thumbnails will be loaded here by JS -->
             <div class="mt-8 text-center">
                 <h3 class="text-xl font-bold text-gray-100 mb-4">You Might Also Like This:</h3>
-                <div id="static-movie-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div id="static-media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     <!-- Dynamic Popular TV Series will be loaded here by JS -->
                 </div>
                 <div id="loading-spinner-static-grid" class="hidden flex justify-center items-center py-8">
@@ -239,31 +246,18 @@
         </div>
     </footer>
 
-    <script type="module">
+    <!-- Load config.js as a regular script before the main script -->
+    <script src="/config.js"></script> 
+
+    <!-- Change type="module" to a regular script to access global variables from config.js -->
+    <script>
         // Application configuration
         const AppConfig = {
             TMDB_BASE_URL: 'https://tmdb-api-proxy-1.musadekakhmad.workers.dev', // Your Cloudflare Worker URL
             TMDB_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p/w500',
             TMDB_PROFILE_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p/w185',
-            ADSTERRA_DIRECT_LINKS: [
-                'https://discreetisabella.com/g77bpz0g?key=f1cc7147d1c59d932b6186896ab8854c',
-                'https://discreetisabella.com/vttzzi1n?key=bfc8d7d57de835830a0d72fbe7a47be1',
-                'https://discreetisabella.com/y5fc24f7?key=d6efa8068c5da148ed5cf346ffa62290',
-                'https://discreetisabella.com/a43vczjf1b?key=70467091cade36a7f916bfe58dc80cff',
-                'https://discreetisabella.com/t71keggw?key=9c6906c82c8eb114e2baef9058f4c4e5',
-                'https://discreetisabella.com/vb5ixea83?key=c4e7438c85503eda026984db5e7aa3c4',              
-                'https://discreetisabella.com/x818nj48?key=db0a9d9fa9d81626b459383a7bdc33ee',
-                'https://discreetisabella.com/gd8bwkyj?key=d2d35cf16f521bf5e9accfdd865dae8f',
-                'https://discreetisabella.com/paij3re0by?key=fa60f72b73c05d987bd978f83a6deaa8',
-                'https://discreetisabella.com/gh4tkda15?key=080742d09d4b5234a4fdaa773e48ebd4',
-                'https://discreetisabella.com/u1ipxidjif?key=bf544685cc418fde38d3de4391de6fee',
-                'https://discreetisabella.com/nu4ravi1cx?key=4d0556009c2d17968977e235d5de925a',
-                'https://discreetisabella.com/wdhedf2wx?key=a2c98838af4390b59e8b7aaaea3f1660',
-                'https://discreetisabella.com/yed8kj7bvw?key=b7830767455354f8e097df2a9e0f040c',
-                'https://discreetisabella.com/w2sw8zgx21?key=d34ca1378210247721e98e65d20b3693',
-                'https://discreetisabella.com/qn92sfcb?key=a8333f15c6bba15e367a5456f691547c',
-                'https://discreetisabella.com/rz2xzbfm?key=8c4045c97068010d84c3f1002e82b1c9'
-            ]
+            // Using ADSTERRA_DIRECT_LINKS accessed from the window object
+            ADSTERRA_DIRECT_LINKS: window.ADSTERRA_DIRECT_LINKS || [] // Adding empty array fallback
         };
 
         // Centralized application state object
@@ -288,6 +282,11 @@
 
         // Function to get the next Adsterra direct link in rotation
         function getNextAdLink() {
+            // FIX: Ensure ADSTERRA_DIRECT_LINKS exists and is not empty
+            if (!AppConfig.ADSTERRA_DIRECT_LINKS || AppConfig.ADSTERRA_DIRECT_LINKS.length === 0) {
+                console.warn("ADSTERRA_DIRECT_LINKS is not defined or is empty. No ad link available.");
+                return '#'; // Return a fallback or empty link
+            }
             const link = AppConfig.ADSTERRA_DIRECT_LINKS[currentAdLinkIndex];
             currentAdLinkIndex = (currentAdLinkIndex + 1) % AppConfig.ADSTERRA_DIRECT_LINKS.length; // Cycle through links
             return link;
@@ -351,22 +350,20 @@
         const layer1 = document.getElementById('layer-1');
         const layer2 = document.getElementById('layer-2');
         const layer3 = document.getElementById('layer-3');
-        // const layer4 = document.getElementById('layer-4'); // Removed layer4 reference
 
         const backToListButton = document.getElementById('back-to-list-button');
         const backToDetailButton = document.getElementById('back-to-detail-button');
-        // const backFromSeoButton = document.getElementById('back-from-seo-button'); // Removed backFromSeoButton reference
 
         const stream1Button = document.getElementById('stream-1-button');
         const stream2Button = document.getElementById('stream-2-button');
         const stream3Button = document.getElementById('stream-3-button');
         const stream4Button = document.getElementById('stream-4-button');
 
-        const staticMovieGrid = document.getElementById('static-movie-grid'); // This will now show popular TV series
+        const staticMediaGrid = document.getElementById('static-media-grid'); 
         const loadingSpinnerStaticGrid = document.getElementById('loading-spinner-static-grid');
         const noResultsMessageStaticGrid = document.getElementById('no-results-message-static-grid');
 
-        const similarMoviesGrid = document.getElementById('similar-movies-grid'); // This will now show similar TV series
+        const similarMediaGrid = document.getElementById('similar-media-grid'); 
         const loadingSpinnerSimilar = document.getElementById('loading-spinner-similar');
         const noSimilarResultsMessage = document.getElementById('no-similar-results-message');
 
@@ -376,7 +373,7 @@
         const loadingSpinnerLayer3 = document.getElementById('loading-spinner-layer3');
 
         const navHomeButton = document.getElementById('nav-home-button');
-        // Removed navMoviesButton
+        const navMoviesButton = document.getElementById('nav-movies-button'); 
         const navTvSeriesButton = document.getElementById('nav-tvseries-button');
         const genreButtonsContainer = document.getElementById('genre-buttons-container');
 
@@ -387,14 +384,9 @@
             metaKeywords: "Erica Filme, free TV series, watch TV series online, HD streaming, latest TV shows, popular TV series, no subscription, free entertainment, online TV, TV series streaming site, watch series, full HD TV series, free streaming platform, best free TV series, online entertainment, TV series database",
             ogDescription: "Erica Filme: Stream thousands of free TV series online in HD quality. Discover the latest popular TV shows, classic series, and new episodes with no subscription required. Your ultimate destination for unlimited TV series entertainment, available on any device. Start watching now!",
             homeButton: "Home",
-            moviesButton: "Movies", // Kept for consistency but not used in this app
+            moviesButton: "Movies",
             tvSeriesButton: "TV Series",
-            searchMoviesPlaceholder: "Search movies...", // Kept for consistency but not used in this app
             searchTvSeriesPlaceholder: "Search TV series...",
-            upcomingMovies: "Upcoming Movies", // Kept for consistency but not used in this app
-            nowPlayingMovies: "Now Playing Movies", // Kept for consistency but not used in this app
-            popularMovies: "Popular Movies", // Kept for consistency but not used in this app
-            topRatedMovies: "Top Rated Movies", // Kept for consistency but not used in this app
             airingTodayTv: "TV Series Airing Today",
             onTv: "On The Air TV Series",
             popularTv: "Popular TV Series",
@@ -423,13 +415,13 @@
             failedToLoadDetails: "Failed to load media details. Please try again later.",
             noMediaSelected: "No media selected for streaming.",
             imdbIdNotAvailable: "IMDb ID not available for streaming. Please try Stream 1.",
-            invalidMediaHash: "Invalid media hash, loading popular TV series.", // Updated message
+            invalidMediaHash: "Invalid media hash, loading popular TV series.",
             notAvailable: "N/A",
             similarTitles: "Similar Titles You Might Like:",
             noSimilarTitles: "No similar titles found.",
             year: "Year",
             releaseDate: "Release Date",
-            director: "Director",
+            director: "Director", 
             duration: "Duration",
             userScore: "User Score",
             contentRating: "Content Rating",
@@ -451,7 +443,7 @@
                 credits: '/tv/',
                 genres_list: '/genre/tv/list',
                 similar: '/tv/',
-                discover: '/discover/tv' // Added for genre filtering
+                discover: '/discover/tv' // Used for genre filtering
             }
         };
 
@@ -550,7 +542,7 @@
          * @param {number} [genreId=null] - Genre ID, if filtering by genre.
          */
         async function loadMediaSection(type, sectionName, page = 1, query = '', genreId = null) {
-            const gridElement = document.getElementById(`movie-grid-${sectionName}`); // Note: ID still uses 'movie-grid' for consistency
+            const gridElement = document.getElementById(`media-grid-${sectionName}`); 
             const loadMoreBtn = document.getElementById(`load-more-${sectionName}`);
             const spinnerElement = document.getElementById(`loading-spinner-${sectionName}`);
             const noResultsMsg = document.getElementById(`no-results-message-${sectionName}`);
@@ -570,7 +562,6 @@
                 url = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[type].search}?query=${encodeURIComponent(query)}&page=${page}&language=en`;
                 titleText = `Search Results for "${query}"`; // Specific title for search
             } else if (genreId) {
-                // CORRECTED: Use mediaTypeEndpoints[type].discover for genre filtering
                 url = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[type].discover}?with_genres=${genreId}&page=${page}&language=en`;
                 const genreName = appState.genres.find(g => g.id === genreId)?.name || 'TV Series'; // Get genre name from state
                 titleText = `${genreName} TV Series`; // Dynamic title for genre
@@ -590,9 +581,8 @@
             sectionTitleElement.textContent = titleText; // Update section title
 
             try {
-                const response = await fetchWithRetry(url); // Using fetchWithRetry
+                const response = await fetchWithRetry(url);
                 if (!response.ok) {
-                    // This case is handled by fetchWithRetry, but keeping for clarity if needed for specific non-network errors.
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
@@ -612,8 +602,8 @@
                         mediaCard.setAttribute('aria-label', `Watch ${media.title || media.name}`);
 
                         const posterPath = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
-                        const titleOrName = media.title || media.name || TEXT_CONSTANTS.titleNotAvailable;
-                        const releaseDateOrFirstAirDate = media.release_date ? media.release_date.substring(0, 4) : (media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable);
+                        const titleOrName = media.name || TEXT_CONSTANTS.titleNotAvailable; // For TV, use 'name'
+                        const releaseDateOrFirstAirDate = media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable; // For TV, use 'first_air_date'
 
                         mediaCard.innerHTML = `
                             <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
@@ -646,7 +636,7 @@
 
                 appState.pageCounters[sectionName] = data.page; // Update specific page counter
             } catch (error) {
-                console.error(`Error fetching media for ${sectionName} section from ${url}:`, error); // Updated error message
+                console.error(`Error fetching media for ${sectionName} section from ${url}:`, error);
                 showMessageBox('errorTitle', 'failedToLoadMedia', { section: sectionName, error: error.message });
                 loadMoreBtn.classList.add('hidden');
                 noResultsMsg.classList.remove('hidden');
@@ -661,14 +651,14 @@
          * This is always for TV series in this app.
          */
         async function loadPopularTvIntoStaticGrid() {
-            staticMovieGrid.innerHTML = ''; // Clear previous content
+            staticMediaGrid.innerHTML = ''; 
             loadingSpinnerStaticGrid.classList.remove('hidden');
             noResultsMessageStaticGrid.classList.add('hidden');
 
             const url = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints.tv.popular}?page=1&language=en`;
 
             try {
-                const response = await fetchWithRetry(url); // Using fetchWithRetry
+                const response = await fetchWithRetry(url);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -679,8 +669,8 @@
                     noResultsMessageStaticGrid.textContent = TEXT_CONSTANTS.noResultsFound;
                 } else {
                     noResultsMessageStaticGrid.classList.add('hidden');
-                    // Limit to 12 items for the "You Might Also Like This" section
-                    data.results.slice(0, 12).forEach(media => {
+                    // Limit to 6 items for the "You Might Also Like This" section
+                    data.results.slice(0, 6).forEach(media => { // Changed from 12 to 6
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
                         mediaCard.dataset.mediaId = media.id;
@@ -688,8 +678,8 @@
                         mediaCard.setAttribute('aria-label', `Watch ${media.title || media.name}`);
 
                         const posterPath = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
-                        const titleOrName = media.title || media.name || TEXT_CONSTANTS.titleNotAvailable;
-                        const releaseDateOrFirstAirDate = media.release_date ? media.release_date.substring(0, 4) : (media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable);
+                        const titleOrName = media.name || TEXT_CONSTANTS.titleNotAvailable;
+                        const releaseDateOrFirstAirDate = media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable;
 
                         mediaCard.innerHTML = `
                             <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
@@ -698,7 +688,7 @@
                                 <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
                             </div>
                         `;
-                        staticMovieGrid.appendChild(mediaCard);
+                        staticMediaGrid.appendChild(mediaCard);
 
                         mediaCard.addEventListener('click', () => {
                             triggerAd();
@@ -713,7 +703,7 @@
                     });
                 }
             } catch (error) {
-                console.error('Error fetching popular TV series for static grid:', error); // Updated error message
+                console.error('Error fetching popular TV series for static grid:', error);
                 showMessageBox('errorTitle', 'failedToLoadMedia', { section: 'Popular TV Series', error: error.message });
                 noResultsMessageStaticGrid.classList.remove('hidden');
                 noResultsMessageStaticGrid.textContent = TEXT_CONSTANTS.failedToLoadMedia;
@@ -722,6 +712,76 @@
             }
         }
 
+
+        /**
+         * Updates the document's meta tags and injects Schema.org JSON-LD for SEO.
+         * This is crucial for dynamic content pages.
+         * @param {Object} media - The media object (movie or TV show).
+         * @param {string} mediaType - 'movie' or 'tv'.
+         * @param {Object} creditsData - Credits data for director/cast.
+         * @param {string} contentRating - The content rating (e.g., 'PG-13').
+         * @param {string} trailerKey - YouTube key for the trailer.
+         */
+        function updatePageMetadata(media, mediaType, creditsData, contentRating, trailerKey) {
+            const title = media.name || TEXT_CONSTANTS.titleNotAvailable; // For TV, use 'name'
+            const description = media.overview || TEXT_CONSTANTS.plotNotAvailable;
+            const imageUrl = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : 'https://placehold.co/1200x630/374151/d1d5db?text=Erica+Filme';
+            const currentUrl = window.location.href;
+
+            // Update <title>
+            document.title = `${title} - Erica Filme TV Series`; // Updated for TV Series
+
+            // Update <meta name="description">
+            document.querySelector('meta[name="description"]').setAttribute('content', description);
+
+            // Update Open Graph tags
+            document.querySelector('meta[property="og:title"]').setAttribute('content', `${title} - Erica Filme TV Series`); // Updated for TV Series
+            document.querySelector('meta[property="og:description"]').setAttribute('content', description);
+            document.querySelector('meta[property="og:image"]').setAttribute('content', imageUrl);
+            document.querySelector('meta[property="og:url"]').setAttribute('content', currentUrl);
+
+            // Update Canonical tag
+            document.querySelector('link[rel="canonical"]').setAttribute('href', currentUrl);
+
+            // Inject Schema.org JSON-LD
+            const existingSchema = document.querySelector('script[type="application/ld+json"]');
+            if (existingSchema) existingSchema.remove(); // Remove old schema if exists
+
+            const creator = creditsData.crew.find(person => person.job === 'Creator'); // For TV, use 'Creator'
+            const creatorName = creator ? creator.name : undefined;
+            const cast = creditsData.cast.slice(0, 5).map(person => ({ "@type": "Person", "name": person.name }));
+
+            const schemaData = {
+                "@context": "http://schema.org",
+                "@type": "TVSeries", // Always TVSeries for this app
+                "name": title,
+                "description": description,
+                "image": imageUrl,
+                "url": currentUrl,
+                "datePublished": media.first_air_date, // For TV, use 'first_air_date'
+                "creator": creatorName ? { "@type": "Person", "name": creatorName } : undefined,
+                "actor": cast.length > 0 ? cast : undefined,
+                "aggregateRating": media.vote_average ? {
+                    "@type": "AggregateRating",
+                    "ratingValue": media.vote_average.toFixed(1),
+                    "ratingCount": media.vote_count
+                } : undefined,
+                "contentRating": contentRating !== TEXT_CONSTANTS.notAvailable ? contentRating : undefined,
+                "trailer": trailerKey ? {
+                    "@type": "VideoObject",
+                    "name": `${title} Trailer`,
+                    "description": `Official trailer for ${title}`,
+                    "uploadDate": new Date().toISOString().split('T')[0], // Or actual upload date if available
+                    "embedUrl": `https://www.youtube.com/embed/${trailerKey}`,
+                    "thumbnailUrl": `https://img.youtube.com/vi/${trailerKey}/hqdefault.jpg`
+                } : undefined
+            };
+
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(schemaData, null, 2); // Pretty print for readability
+            document.head.appendChild(script);
+        }
 
         // Function to fetch and display TV series details (Layer 2)
         async function fetchAndDisplayMediaDetail(mediaId, mediaType, mediaTitleForSlug = '') {
@@ -740,17 +800,22 @@
             }
 
             showLayer(layer2);
-            document.getElementById('movie-detail-content').classList.add('hidden');
+            document.getElementById('media-detail-content').classList.add('hidden'); 
             loadingSpinnerLayer2.classList.remove('hidden');
 
-            let detailUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].detail}${mediaId}?language=en`;
-
             try {
-                const detailResponse = await fetchWithRetry(detailUrl); // Using fetchWithRetry
-                if (!detailResponse.ok) {
-                    throw new Error(`HTTP error! status: ${detailResponse.status}`);
-                }
+                // Parallel API calls for performance improvement
+                const [detailResponse, videoResponse, creditsResponse, contentRatingsResponse] = await Promise.all([
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].detail}${mediaId}?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].videos}${mediaId}/videos?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].credits}${mediaId}/credits?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}/tv/${mediaId}/content_ratings`) // Specific endpoint for TV content ratings
+                ]);
+
                 const media = await detailResponse.json();
+                const videosData = await videoResponse.json();
+                const creditsData = await creditsResponse.json();
+                const contentRatingsData = await contentRatingsResponse.json();
 
                 // Update URL using conditional history.replaceState
                 const mediaSlug = slugify(media.name || TEXT_CONSTANTS.titleNotAvailable);
@@ -766,13 +831,6 @@
                     }
                 }
 
-                let videoUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].videos}${mediaId}/videos?language=en`;
-                const videoResponse = await fetchWithRetry(videoUrl); // Using fetchWithRetry
-                if (!videoResponse.ok) {
-                    throw new Error(`HTTP error! status: ${videoResponse.status}`);
-                }
-                const videosData = await videoResponse.json();
-
                 let trailer = videosData.results.find(vid => vid.type === 'Trailer' && vid.site === 'YouTube');
                 
                 // Fallback: if no specific 'Trailer' type is found, try any YouTube video
@@ -783,33 +841,21 @@
                 // Using a relevant movie trailer compilation as fallback if no specific trailer is found
                 const trailerUrl = trailer ? `https://www.youtube.com/embed/${trailer.key}` : 'https://www.youtube.com/embed/DmwYqQki_Ic';
 
-                let creditsUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].credits}${mediaId}/credits?language=en`;
-                const creditsResponse = await fetchWithRetry(creditsUrl); // Using fetchWithRetry
-                if (!creditsResponse.ok) {
-                    throw new Error(`HTTP error! status: ${creditsResponse.status}`);
-                }
-                const creditsData = await creditsResponse.json();
-                
-                const director = creditsData.crew.find(person => person.job === 'Director'); // For TV, this might be 'Creator' or 'Executive Producer'
-                const directorName = director ? director.name : TEXT_CONSTANTS.notAvailable; // Keeping 'Director' for simplicity
+                const creator = creditsData.crew.find(person => person.job === 'Creator'); // For TV, this is 'Creator'
+                const creatorName = creator ? creator.name : TEXT_CONSTANTS.notAvailable;
                 const cast = creditsData.cast.slice(0, 5).map(person => person.name).join(', '); // Top 5 cast members
 
-                // Fetch content rating for TV
+                // Fetch content rating
                 let contentRating = TEXT_CONSTANTS.notAvailable;
-                let contentRatingsUrl = `${AppConfig.TMDB_BASE_URL}/tv/${mediaId}/content_ratings`;
-                const contentRatingsResponse = await fetchWithRetry(contentRatingsUrl); // Using fetchWithRetry
-                if (contentRatingsResponse.ok) {
-                    const contentRatingsData = await contentRatingsResponse.json();
-                    const usRating = contentRatingsData.results.find(res => res.iso_3166_1 === 'US');
-                    if (usRating) {
-                        contentRating = usRating.rating || TEXT_CONSTANTS.notAvailable;
-                    }
+                const usRating = contentRatingsData.results.find(res => res.iso_3166_1 === 'US');
+                if (usRating) {
+                    contentRating = usRating.rating || TEXT_CONSTANTS.notAvailable;
                 }
 
                 // Prepare duration text for TV
                 let durationText = TEXT_CONSTANTS.notAvailable;
                 if (media.number_of_seasons && media.number_of_episodes) {
-                    durationText = `${media.number_of_seasons} ${TEXT_CONSTANTS.seasons}, ${TEXT_CONSTANTS.episodes} ${media.number_of_episodes}`;
+                    durationText = `${media.number_of_seasons} ${TEXT_CONSTANTS.seasons}, ${media.number_of_episodes} ${TEXT_CONSTANTS.episodes}`;
                 } else if (media.number_of_seasons) {
                     durationText = `${media.number_of_seasons} ${TEXT_CONSTANTS.seasons}`;
                 } else if (media.number_of_episodes) {
@@ -818,6 +864,9 @@
 
                 // Update currentImdbId in appState
                 appState.currentImdbId = media.imdb_id;
+
+                // Update page metadata and inject Schema.org JSON-LD
+                updatePageMetadata(media, mediaType, creditsData, contentRating, trailer ? trailer.key : null);
 
                 // Populate Layer 2 with enhanced details
                 const firstAirYear = media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.notAvailable;
@@ -838,7 +887,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-300 text-sm mb-4">
                                 <p><span class="font-semibold">${TEXT_CONSTANTS.year}:</span> ${firstAirYear}</p>
                                 <p><span class="font-semibold">First Air Date:</span> ${fullFirstAirDate}</p>
-                                <p><span class="font-semibold">Creator:</span> ${directorName}</p> <!-- Changed from Director to Creator -->
+                                <p><span class="font-semibold">Creator:</span> ${creatorName}</p>
                                 <p><span class="font-semibold">${TEXT_CONSTANTS.duration}:</span> ${durationText}</p>
                                 <p><span class="font-semibold">${TEXT_CONSTANTS.contentRating}:</span> ${contentRating}</p>
                             </div>
@@ -848,7 +897,7 @@
                         </div>
                     </div>
                 `;
-                document.getElementById('movie-detail-content').innerHTML = detailContentHtml;
+                document.getElementById('media-detail-content').innerHTML = detailContentHtml; 
 
                 document.getElementById('detail-trailer').src = trailerUrl;
 
@@ -856,7 +905,7 @@
                 await loadSimilarMedia(mediaId, mediaType);
 
             } catch (error) {
-                console.error(`Error fetching media details from ${detailUrl}:`, error); // Updated error message
+                console.error(`Error fetching media details from ${detailUrl}:`, error);
                 showMessageBox('errorTitle', 'failedToLoadDetails', { error: error.message });
                 showLayer(layer1);
                 if (isSandboxEnvironment()) {
@@ -867,7 +916,7 @@
                 handleLocationChange(); // Manually trigger
             } finally {
                 loadingSpinnerLayer2.classList.add('hidden');
-                document.getElementById('movie-detail-content').classList.remove('hidden');
+                document.getElementById('media-detail-content').classList.remove('hidden'); 
             }
         }
 
@@ -877,58 +926,85 @@
          * @param {string} mediaType - 'tv' (always 'tv' for this app).
          */
         async function loadSimilarMedia(mediaId, mediaType) {
-            similarMoviesGrid.innerHTML = ''; // Clear previous similar TV series
+            // Clear previous similar TV series by removing all child nodes
+            while (similarMediaGrid.firstChild) { 
+                similarMediaGrid.removeChild(similarMediaGrid.firstChild); 
+            }
             loadingSpinnerSimilar.classList.remove('hidden');
             noSimilarResultsMessage.classList.add('hidden');
 
-            let similarUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].similar}${mediaId}/similar?language=en&page=1`;
             try {
-                const response = await fetchWithRetry(similarUrl); // Using fetchWithRetry
+                const similarUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].similar}${mediaId}/similar?language=en&page=1`;
+                const response = await fetchWithRetry(similarUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
 
-                if (data.results.length === 0) {
-                    // If no similar titles found, display hardcoded recommendations
+                let combinedMedia = []; 
+                if (data.results.length > 0) {
+                    combinedMedia = data.results;
+                } else {
+                    combinedMedia = recommendedFallbackTvSeries; 
+                }
+
+                // Deduplicate and limit to 6 unique media items
+                const uniqueMediaMap = new Map(); 
+                for (const mediaItem of combinedMedia) { 
+                    // Use mediaItem.id for deduplication
+                    if (!uniqueMediaMap.has(mediaItem.id)) {
+                        uniqueMediaMap.set(mediaItem.id, mediaItem);
+                    }
+                }
+                const mediaToDisplay = Array.from(uniqueMediaMap.values()).slice(0, 6); 
+
+
+                if (mediaToDisplay.length === 0) {
                     noSimilarResultsMessage.classList.remove('hidden');
                     noSimilarResultsMessage.textContent = TEXT_CONSTANTS.noSimilarTitles;
-                    
-                    // Populate with recommended fallback TV series
-                    recommendedFallbackTvSeries.forEach(recMedia => { 
-                        const mediaCard = document.createElement('div');
-                        mediaCard.className = 'bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
-                        mediaCard.dataset.mediaId = recMedia.id;
-                        mediaCard.dataset.mediaType = 'tv'; // Assuming fallback are all TV series
-                        mediaCard.setAttribute('aria-label', `Watch ${recMedia.name}`);
-                        
-                        const posterPath = recMedia.poster_path ? `${recMedia.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
-                        const titleOrName = recMedia.name || TEXT_CONSTANTS.titleNotAvailable;
-                        const releaseDateOrFirstAirDate = recMedia.first_air_date ? recMedia.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable;
+                } else {
+                    noSimilarResultsMessage.classList.add('hidden');
+                    const mediaCardsHtml = []; 
 
-                        mediaCard.innerHTML = `
-                            <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
-                            <div class="p-4 text-center">
-                                <h3 class="text-lg font-semibold text-gray-100 truncate">${titleOrName}</h3>
-                                <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
+                    mediaToDisplay.forEach(media => {
+                        const posterPath = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
+                        const titleOrName = media.name || TEXT_CONSTANTS.titleNotAvailable;
+                        const releaseDateOrFirstAirDate = media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable;
+
+                        mediaCardsHtml.push(`
+                            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                                 data-media-id="${media.id}"
+                                 data-media-type="${mediaType}"
+                                 aria-label="Watch ${titleOrName}">
+                                <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
+                                <div class="p-4 text-center">
+                                    <h3 class="text-lg font-semibold text-gray-100 truncate">${titleOrName}</h3>
+                                    <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
+                                </div>
                             </div>
-                        `;
-                        similarMoviesGrid.appendChild(mediaCard);
+                        `);
+                    });
+                    similarMediaGrid.innerHTML = mediaCardsHtml.join(''); 
 
-                        mediaCard.addEventListener('click', () => {
+                    // Re-attach event listeners after innerHTML update
+                    similarMediaGrid.querySelectorAll('.bg-gray-800').forEach(card => { 
+                        card.addEventListener('click', () => {
                             triggerAd();
-                            const newPath = `/tvseries/media/tv/${recMedia.id}/${slugify(titleOrName)}`;
+                            const mediaId = card.dataset.mediaId;
+                            const mediaType = card.dataset.mediaType;
+                            const titleForSlug = card.querySelector('h3').textContent; 
+                            const newPath = `/tvseries/media/${mediaType}/${mediaId}/${slugify(titleForSlug)}`;
                             if (isSandboxEnvironment()) {
                                 window.location.hash = newPath.replace('/tvseries', '');
                             } else {
                                 history.pushState(null, '', newPath);
                             }
-                            handleLocationChange(); // Manually trigger
+                            handleLocationChange();
                         });
                     });
                 }
             } catch (error) {
-                console.error(`Error fetching similar media from ${similarUrl}:`, error); // Updated error message
+                console.error('Error fetching similar media:', error);
                 showMessageBox('errorTitle', 'failedToLoadMedia', { section: 'Similar Media', error: error.message });
                 noSimilarResultsMessage.classList.remove('hidden');
                 noSimilarResultsMessage.textContent = TEXT_CONSTANTS.failedToLoadMedia;
@@ -981,7 +1057,7 @@
         }
 
 
-        // Function to show all TV series sections (Movie sections are removed in this app)
+        // Function to show all TV series sections
         async function loadAllTvSections() {
             // Reset page counters for all TV sections
             appState.pageCounters['airing-today-tv'] = 1;
@@ -998,6 +1074,7 @@
             document.getElementById('on-tv-section').style.display = 'block';
             document.getElementById('popular-tv-section').style.display = 'block';
             document.getElementById('top-rated-tv-section').style.display = 'block';
+
 
             try {
                 await Promise.all([
@@ -1066,7 +1143,7 @@
                         if (isSandboxEnvironment()) {
                             window.location.hash = ''; // Clear hash to default to base
                         } else {
-                            history.replaceState(null, '', appBasePath);
+                            history.pushState(null, '', appBasePath);
                         }
                         handleLocationChange(); // Re-evaluate
                     }
@@ -1075,7 +1152,7 @@
                     if (isSandboxEnvironment()) {
                         window.location.hash = '';
                     } else {
-                        history.replaceState(null, '', appBasePath);
+                        history.pushState(null, '', appBasePath);
                     }
                     handleLocationChange();
                 }
@@ -1185,7 +1262,7 @@
 
             let genresListUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[type].genres_list}?language=en`;
             try {
-                const response = await fetchWithRetry(genresListUrl); // Using fetchWithRetry
+                const response = await fetchWithRetry(genresListUrl);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 appState.genres = data.genres; // Store genres in appState
@@ -1221,7 +1298,7 @@
                     genreButtonsContainer.classList.add('hidden'); // Hide if no genres
                 }
             } catch (error) {
-                console.error(`Error fetching genres from ${genresListUrl}:`, error); // Updated error message
+                console.error(`Error fetching genres from ${genresListUrl}:`, error);
                 showMessageBox('errorTitle', 'failedToLoadMedia', { type: 'genres', error: error.message });
                 genreButtonsContainer.classList.add('hidden');
             }
@@ -1316,7 +1393,7 @@
                 genreButtonsContainer.classList.add('hidden'); // Hide genre buttons during search
                 
                 appState.pageCounters[targetSectionId.replace('-section', '')] = 1; // Reset page counter for the target search section
-                loadMediaSection(type, targetSectionId.replace('-section', ''), 1, query); // Load search results into the appropriate grid
+                loadMediaSection('tv', targetSectionId.replace('-section', ''), 1, query); // Load search results into the appropriate grid
                 
                 const newPath = `/tvseries/search/${encodeURIComponent(query)}`; // Update URL for search
                 if (isSandboxEnvironment()) {
@@ -1368,9 +1445,22 @@
         // Handle navigation buttons (TV Series)
         navHomeButton.addEventListener('click', () => {
             triggerAd();
-            window.location.href = '/'; // Go to the root domain (main landing page)
+            // FIX: Use hash-based navigation for sandbox environment to prevent URL error
+            if (isSandboxEnvironment()) {
+                window.location.hash = ''; // Navigate to the base of the TV series app
+            } else {
+                window.location.href = '/'; // Go to the root domain (main landing page)
+            }
         });
 
+        // Handle Movies navigation button (newly added)
+        navMoviesButton.addEventListener('click', () => {
+            triggerAd();
+            // Redirect to the movies app
+            window.location.href = 'https://ericafilme.pages.dev/movies/';
+        });
+
+        // Handle TV Series navigation button
         navTvSeriesButton.addEventListener('click', () => {
             triggerAd();
             appState.currentSearchQuery = '';
