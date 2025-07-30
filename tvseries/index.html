@@ -493,7 +493,6 @@
             layer1.style.display = 'none';
             layer2.style.display = 'none';
             layer3.style.display = 'none';
-            // layer4.style.display = 'none'; // Removed layer4 reference
             layerToShow.style.display = 'block';
             window.scrollTo(0, 0); // Scroll to top when changing layers
         }
@@ -621,8 +620,14 @@
 
                         mediaCard.addEventListener('click', () => {
                             triggerAd(); // Trigger ad on any media card click
-                            // Update hash instead of direct call to prevent double loading
-                            window.location.hash = `#/media/${type}/${media.id}/${slugify(titleOrName)}`;
+                            // Use conditional history.pushState for cleaner URLs
+                            const newPath = `/tvseries/media/${type}/${media.id}/${slugify(titleOrName)}`;
+                            if (isSandboxEnvironment()) {
+                                window.location.hash = newPath.replace('/tvseries', ''); // Remove base path for hash routing
+                            } else {
+                                history.pushState(null, '', newPath);
+                            }
+                            handleLocationChange(); // Manually trigger location change handler
                         });
                     });
                 }
@@ -691,7 +696,13 @@
 
                         mediaCard.addEventListener('click', () => {
                             triggerAd();
-                            window.location.hash = `#/media/tv/${media.id}/${slugify(titleOrName)}`;
+                            const newPath = `/tvseries/media/tv/${media.id}/${slugify(titleOrName)}`;
+                            if (isSandboxEnvironment()) {
+                                window.location.hash = newPath.replace('/tvseries', '');
+                            } else {
+                                history.pushState(null, '', newPath);
+                            }
+                            handleLocationChange(); // Manually trigger location change handler
                         });
                     });
                 }
@@ -713,7 +724,12 @@
                 console.error('Attempted to load non-TV series media in the TV Series app.');
                 showMessageBox('errorTitle', 'failedToLoadDetails', { error: 'Invalid media type for this application.' });
                 showLayer(layer1);
-                window.location.hash = '#/tv';
+                if (isSandboxEnvironment()) {
+                    window.location.hash = ''; // Redirect to TV series list
+                } else {
+                    history.pushState(null, '', '/tvseries/'); // Redirect to TV series list
+                }
+                handleLocationChange(); // Manually trigger
                 return;
             }
 
@@ -730,10 +746,18 @@
                 }
                 const media = await detailResponse.json();
 
-                // Update URL hash for uniqueness (only if not already set by handleHashChange)
+                // Update URL using conditional history.replaceState
                 const mediaSlug = slugify(media.name || TEXT_CONSTANTS.titleNotAvailable);
-                if (window.location.hash !== `#/media/${mediaType}/${media.id}/${mediaSlug}`) {
-                    window.location.hash = `#/media/${mediaType}/${media.id}/${mediaSlug}`;
+                const targetPath = `/tvseries/media/${mediaType}/${media.id}/${mediaSlug}`;
+                if (isSandboxEnvironment()) {
+                    // Only update hash if different
+                    if (window.location.hash !== targetPath.replace('/tvseries', '')) {
+                        window.location.hash = targetPath.replace('/tvseries', '');
+                    }
+                } else {
+                    if (window.location.pathname !== targetPath) {
+                        history.replaceState(null, '', targetPath);
+                    }
                 }
 
                 let videoUrl = `${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].videos}${mediaId}/videos?language=en`;
@@ -829,7 +853,12 @@
                 console.error(`Error fetching media details from ${detailUrl}:`, error); // Updated error message
                 showMessageBox('errorTitle', 'failedToLoadDetails', { error: error.message });
                 showLayer(layer1);
-                window.location.hash = '#/tv'; // Revert to TV series list on error
+                if (isSandboxEnvironment()) {
+                    window.location.hash = ''; // Redirect to TV series list on error
+                } else {
+                    history.pushState(null, '', '/tvseries/'); // Redirect to TV series list on error
+                }
+                handleLocationChange(); // Manually trigger
             } finally {
                 loadingSpinnerLayer2.classList.add('hidden');
                 document.getElementById('movie-detail-content').classList.remove('hidden');
@@ -882,7 +911,13 @@
 
                         mediaCard.addEventListener('click', () => {
                             triggerAd();
-                            window.location.hash = `#/media/tv/${recMedia.id}/${slugify(titleOrName)}`;
+                            const newPath = `/tvseries/media/tv/${recMedia.id}/${slugify(titleOrName)}`;
+                            if (isSandboxEnvironment()) {
+                                window.location.hash = newPath.replace('/tvseries', '');
+                            } else {
+                                history.pushState(null, '', newPath);
+                            }
+                            handleLocationChange(); // Manually trigger
                         });
                     });
                 }
@@ -971,47 +1006,154 @@
             }
         }
 
-        // Function to handle URL hash changes
-        async function handleHashChange() {
-            const hash = window.location.hash;
+        // Helper function to detect sandbox environment
+        function isSandboxEnvironment() {
+            return window.location.protocol === 'blob:' || window.location.origin.includes('.scf.usercontent.goog');
+        }
 
-            if (hash.startsWith('#/media/')) {
-                const parts = hash.split('/');
-                if (parts.length >= 4) { // e.g., #/media/tv/123/title-slug
-                    const type = parts[2];
-                    const id = parts[3];
+        // Function to handle URL path changes (replaces handleHashChange)
+        async function handleLocationChange() {
+            const appBasePath = '/tvseries'; // Specific to TV series app
 
-                    if (type === 'tv' && !isNaN(id)) { // Only allow 'tv' type
-                        // Prevent redundant calls if already on the same detail page
-                        if (appState.currentMediaId === id && appState.currentMediaType === type && layer2.style.display === 'block') {
-                            return;
-                        }
+            let effectivePath; // This will be the path we actually parse
+            if (isSandboxEnvironment()) {
+                effectivePath = window.location.hash.substring(1); // Get content after #
+                // Ensure effectivePath always starts with the app's conceptual base for consistent parsing
+                if (!effectivePath.startsWith(appBasePath.substring(1)) && effectivePath !== '') {
+                    effectivePath = `${appBasePath.substring(1)}/${effectivePath}`;
+                } else if (effectivePath === '') {
+                    effectivePath = appBasePath.substring(1); // Default to 'tvseries' if hash is empty
+                }
+            } else {
+                effectivePath = window.location.pathname;
+            }
+
+            const pathSegments = effectivePath.split('/').filter(segment => segment !== '');
+
+            // Normalize pathSegments relative to the app's base path
+            let relativePathSegments;
+            if (pathSegments[0] === appBasePath.substring(1)) { // If it starts with 'tvseries'
+                relativePathSegments = pathSegments.slice(1); // Remove 'tvseries'
+            } else {
+                relativePathSegments = pathSegments; // Otherwise, use as is (e.g., ['media', 'tv', '123'])
+            }
+
+            const relativePath = relativePathSegments.join('/');
+
+            if (relativePath.startsWith('media/')) {
+                const mediaSegments = relativePath.split('/');
+                if (mediaSegments.length >= 3) { // e.g., media/tv/123/title-slug
+                    const type = mediaSegments[1]; // 'tv'
+                    const id = mediaSegments[2];
+
+                    if (type === 'tv' && !isNaN(id)) {
                         appState.currentMediaId = id;
                         appState.currentMediaType = type;
-                        // Hide all sections on Layer 1 when viewing details
                         document.getElementById('airing-today-tv-section').style.display = 'none';
                         document.getElementById('on-tv-section').style.display = 'none';
                         document.getElementById('popular-tv-section').style.display = 'none';
                         document.getElementById('top-rated-tv-section').style.display = 'none';
-                        genreButtonsContainer.classList.add('hidden'); // Hide genre buttons
+                        genreButtonsContainer.classList.add('hidden');
                         await fetchAndDisplayMediaDetail(id, type);
                     } else {
-                        // Invalid hash or non-TV type, revert to TV series home
-                        window.location.hash = '#/tv';
+                        // Invalid media path, redirect to base tvseries path
+                        if (isSandboxEnvironment()) {
+                            window.location.hash = ''; // Clear hash to default to base
+                        } else {
+                            history.replaceState(null, '', appBasePath);
+                        }
+                        handleLocationChange(); // Re-evaluate
                     }
+                } else {
+                    // Malformed media path
+                    if (isSandboxEnvironment()) {
+                        window.location.hash = '';
+                    } else {
+                        history.replaceState(null, '', appBasePath);
+                    }
+                    handleLocationChange();
                 }
-            } else if (hash === '#/tv') {
+            } else if (relativePath.startsWith('genre/')) {
+                const genreSegments = relativePath.split('/');
+                if (genreSegments.length >= 2) { // e.g., genre/action
+                    const genreSlug = genreSegments[1];
+                    const genre = appState.genres.find(g => slugify(g.name) === genreSlug);
+
+                    if (genre) {
+                        appState.currentMediaType = 'tv';
+                        appState.currentGenreId = genre.id;
+                        appState.currentSearchQuery = '';
+                        searchInput.value = '';
+
+                        document.getElementById('airing-today-tv-section').style.display = 'none';
+                        document.getElementById('on-tv-section').style.display = 'none';
+                        document.getElementById('popular-tv-section').style.display = 'block'; // Display popular section for genre results
+                        document.getElementById('top-rated-tv-section').style.display = 'none';
+
+                        genreButtonsContainer.classList.remove('hidden');
+                        appState.pageCounters['popular-tv'] = 1; // Reset page counter for popular section
+                        await loadMediaSection('tv', 'popular-tv', 1, '', genre.id);
+                        showLayer(layer1);
+                    } else {
+                        // Invalid genre slug
+                        if (isSandboxEnvironment()) {
+                            window.location.hash = '';
+                        } else {
+                            history.replaceState(null, '', appBasePath);
+                        }
+                        handleLocationChange();
+                    }
+                } else {
+                    // Malformed genre path
+                    if (isSandboxEnvironment()) {
+                        window.location.hash = '';
+                    } else {
+                        history.replaceState(null, '', appBasePath);
+                    }
+                    handleLocationChange();
+                }
+            } else if (relativePath.startsWith('search/')) {
+                 const searchSegments = relativePath.split('/');
+                 if (searchSegments.length >= 2) { // e.g., search/query
+                     const query = decodeURIComponent(searchSegments[1]);
+                     appState.currentGenreId = null;
+                     appState.currentSearchQuery = query;
+                     searchInput.value = query; // Set search input value
+
+                     document.getElementById('airing-today-tv-section').style.display = 'none';
+                     document.getElementById('on-tv-section').style.display = 'none';
+                     document.getElementById('popular-tv-section').style.display = 'block';
+                     document.getElementById('top-rated-tv-section').style.display = 'none';
+
+                     genreButtonsContainer.classList.add('hidden');
+                     appState.pageCounters['popular-tv'] = 1;
+                     await loadMediaSection('tv', 'popular-tv', 1, query);
+                     showLayer(layer1);
+                 } else {
+                     // Malformed search path
+                     if (isSandboxEnvironment()) {
+                         window.location.hash = '';
+                     } else {
+                         history.replaceState(null, '', appBasePath);
+                     }
+                     handleLocationChange();
+                 }
+            }
+            else if (relativePath === '' || relativePath === '/') {
+                // Base tvseries path (e.g., /tvseries or /tvseries/)
                 appState.currentMediaType = 'tv';
-                await loadGenreButtons('tv'); // Load TV genres
-                genreButtonsContainer.classList.remove('hidden'); // Show genre buttons for TV
-                loadAllTvSections(); // This will reset page counters and load TV sections
+                // Genres are loaded in window.onload, so they should be available here
+                genreButtonsContainer.classList.remove('hidden');
+                loadAllTvSections();
                 showLayer(layer1);
-            } else if (hash === '' || hash === '#') { // If hash is empty or just '#'
-                // If no specific hash, default to showing Layer 1 (TV series list)
-                window.location.hash = '#/tv'; // Redirect to the tv hash to ensure proper loading
             } else {
-                // Any other unrecognized hash, default to TV series home
-                window.location.hash = '#/tv';
+                // Any other unrecognized path for this app, redirect to base tvseries path
+                if (isSandboxEnvironment()) {
+                    window.location.hash = '';
+                } else {
+                    history.replaceState(null, '', appBasePath);
+                }
+                handleLocationChange();
             }
         }
 
@@ -1057,19 +1199,14 @@
                             appState.currentSearchQuery = ''; // Clear search query
                             searchInput.value = ''; // Clear search input
 
-                            // Hide all sections first
-                            document.getElementById('airing-today-tv-section').style.display = 'none';
-                            document.getElementById('on-tv-section').style.display = 'none';
-                            document.getElementById('popular-tv-section').style.display = 'none';
-                            document.getElementById('top-rated-tv-section').style.display = 'none';
-
-                            // Show only the "popular-tv-section" grid for TV genre results
-                            const targetSectionId = 'popular-tv-section';
-                            document.getElementById(targetSectionId).style.display = 'block';
-
-                            // Reset page counter for the target section when filtering by genre
-                            appState.pageCounters[targetSectionId.replace('-section', '')] = 1;
-                            loadMediaSection(type, targetSectionId.replace('-section', ''), 1, '', genre.id);
+                            // Use conditional history.pushState for cleaner URLs for genres
+                            const newPath = `/tvseries/genre/${slugify(genre.name)}`;
+                            if (isSandboxEnvironment()) {
+                                window.location.hash = newPath.replace('/tvseries', '');
+                            } else {
+                                history.pushState(null, '', newPath);
+                            }
+                            handleLocationChange(); // Manually trigger location change handler
                         });
                         genreButtonsContainer.appendChild(button);
                     });
@@ -1111,7 +1248,12 @@
 
         backToListButton.addEventListener('click', () => {
             // Always return to TV series list for this app
-            window.location.hash = '#/tv';
+            if (isSandboxEnvironment()) {
+                window.location.hash = '';
+            } else {
+                history.pushState(null, '', '/tvseries/');
+            }
+            handleLocationChange(); // Manually trigger
         });
 
         backToDetailButton.addEventListener('click', () => {
@@ -1120,8 +1262,6 @@
             document.getElementById('streaming-player').src = '';
             document.getElementById('streaming-player-container').classList.add('hidden');
         });
-
-        // backFromSeoButton removed as Layer 4 is removed
 
         stream1Button.addEventListener('click', () => {
             triggerAd();
@@ -1155,7 +1295,6 @@
         const debouncedSearch = debounce(() => {
             const query = searchInput.value.trim();
             if (query) {
-                // Layer 4 is removed, so no need to check or switch from it
                 appState.currentGenreId = null; // Clear genre filter
                 appState.currentSearchQuery = query;
                 
@@ -1172,10 +1311,22 @@
                 
                 appState.pageCounters[targetSectionId.replace('-section', '')] = 1; // Reset page counter for the target search section
                 loadMediaSection(type, targetSectionId.replace('-section', ''), 1, query); // Load search results into the appropriate grid
+                
+                const newPath = `/tvseries/search/${encodeURIComponent(query)}`; // Update URL for search
+                if (isSandboxEnvironment()) {
+                    window.location.hash = newPath.replace('/tvseries', '');
+                } else {
+                    history.pushState(null, '', newPath);
+                }
             } else {
                 appState.currentSearchQuery = '';
                 // If search input is empty, revert to showing all TV series sections
-                loadAllTvSections();
+                if (isSandboxEnvironment()) {
+                    window.location.hash = ''; // Go back to base tvseries path
+                } else {
+                    history.pushState(null, '', '/tvseries/'); // Go back to base tvseries path
+                }
+                handleLocationChange(); // Manually trigger
                 genreButtonsContainer.classList.remove('hidden'); // Show genre buttons again for TV
             }
         }, 300); // 300ms debounce delay
@@ -1198,12 +1349,15 @@
             // Set language to English by default
             document.documentElement.lang = 'en';
 
-            // Always default to TV series list (Layer 1) on initial load for this specific app
-            window.location.hash = '#/tv'; // Ensure hash is set for proper routing
+            // Load genres first, as they are needed for routing
+            await loadGenreButtons('tv');
+
+            // Handle the initial URL path
+            handleLocationChange();
         };
 
-        // Add event listener for hash changes
-        window.addEventListener('hashchange', handleHashChange);
+        // Add event listener for popstate (browser back/forward buttons)
+        window.addEventListener('popstate', handleLocationChange);
 
         // Handle navigation buttons (TV Series)
         navHomeButton.addEventListener('click', () => {
@@ -1211,17 +1365,18 @@
             window.location.href = '/'; // Go to the root domain (main landing page)
         });
 
-        // Removed navMoviesButton event listener
-
         navTvSeriesButton.addEventListener('click', () => {
             triggerAd();
             appState.currentSearchQuery = '';
             searchInput.value = '';
             appState.currentGenreId = null;
-            window.location.hash = '#/tv'; // Go to TV series list (Layer 1)
+            if (isSandboxEnvironment()) {
+                window.location.hash = ''; // Go to TV series list (Layer 1)
+            } else {
+                history.pushState(null, '', '/tvseries/'); // Go to TV series list (Layer 1)
+            }
+            handleLocationChange(); // Manually trigger
         });
-
-        // loadSeoContent function removed as Layer 4 is removed
     </script>
 </body>
 </html>
