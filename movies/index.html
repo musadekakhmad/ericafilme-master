@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title tag awal untuk halaman daftar film. Akan diperbarui secara dinamis untuk detail film. -->
     <title>Erica Filme - Movies</title>
-    <!-- Favicon: Using SVG emoji for the movie icon. More concise and no external files needed. -->
+    <!-- Favicon: Menggunakan SVG emoji, ini bagus karena efisien dan tidak memerlukan file eksternal. -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
 
-    <!-- Description and Keywords for SEO -->
+    <!-- Description dan Keywords untuk SEO halaman daftar film. Akan diperbarui secara dinamis untuk detail film. -->
     <meta name="description" content="Erica Filme: Stream thousands of free movies online in HD quality. Discover the latest blockbusters, classic films, and popular movies with no subscription required. Your ultimate destination for unlimited movie entertainment, available on any device. Start watching now!">
     <meta name="keywords" content="Erica Filme, free movies, watch movies online, HD streaming, latest movies, popular movies, no subscription, free entertainment, online cinema, movie streaming site, watch films, full HD movies, free streaming platform, best free movies, online entertainment, movie database">
 
-    <!-- Open Graph Meta Tags for Facebook, WhatsApp, etc. -->
+    <!-- Open Graph Meta Tags untuk Facebook, WhatsApp, dll. Akan diperbarui secara dinamis untuk detail film. -->
     <meta property="og:title" content="Erica Filme - Movies">
     <meta property="og:description" content="Erica Filme: Stream thousands of free movies online in HD quality. Discover the latest blockbusters, classic films, and popular movies with no subscription required. Your ultimate destination for unlimited movie entertainment, available on any device. Start watching now!">
     <meta property="og:image" content="https://live.staticflickr.com/65535/54686927986_3bc07303a2_b.jpg">
@@ -21,7 +22,7 @@
     <meta property="og:type" content="website">
     <meta property="fb:app_id" content="61577842845885">
 
-    <!-- Canonical Tag for SEO -->
+    <!-- Canonical Tag for SEO. Akan diperbarui secara dinamis untuk detail film. -->
     <link rel="canonical" href="https://ericafilme.pages.dev/movies/">
 
     <!-- Tailwind CSS CDN - For production, it's recommended to use a custom Tailwind build and host it locally. -->
@@ -33,7 +34,7 @@
     <!-- Custom CSS (if any) -->
     <link rel="stylesheet" href="../style.css"> <!-- Updated path to shared style.css -->
 </head>
-<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col font-roboto">
     <!-- NoScript message for users with JavaScript disabled -->
     <noscript>
         <div class="fixed inset-0 bg-gray-900 text-white flex items-center justify-center p-4 z-50">
@@ -56,12 +57,16 @@
                 <h1 class="text-5xl font-bold whitespace-nowrap rainbow-text">Erica Filme</h1>
                 </a>
             </div>
-            <nav class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full sm:w-auto">
-                <div class="flex w-full sm:w-auto sm:space-x-6">
-                    <!-- New Home Button -->
-                    <button id="nav-home-button" class="nav-button bg-gray-800 hover:bg-green-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Navigate to Home">Home</button>
-                    <button id="nav-movies-button" class="nav-button bg-gray-800 hover:bg-blue-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show Movies">Movies</button>
-                </div>
+            <nav class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full sm:w-auto" aria-label="Main Navigation">
+                <ul class="flex w-full sm:w-auto sm:space-x-6 list-none p-0 m-0">
+                    <li>
+                        <!-- New Home Button -->
+                        <button id="nav-home-button" class="nav-button bg-gray-800 hover:bg-green-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Navigate to Home">Home</button>
+                    </li>
+                    <li>
+                        <button id="nav-movies-button" class="nav-button bg-gray-800 hover:bg-blue-600 rounded-md text-gray-100 font-medium w-full sm:w-auto text-sm md:text-base transition-all duration-200" aria-label="Show Movies">Movies</button>
+                    </li>
+                </ul>
                 <div class="relative w-full sm:w-64">
                     <input type="text" id="search-input" placeholder="Search movies..." class="w-full bg-gray-700 text-gray-200 placeholder-gray-400 py-2 pl-4 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200" aria-label="Search movies">
                     <button id="search-button" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-200" aria-label="Perform search">
@@ -137,7 +142,7 @@
                     <!-- Top Rated Movie thumbnails will be loaded here by JS -->
                 </div>
                 <div class="flex justify-center mt-10">
-                    <button id="load-more-top-rated-movies" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Load more Top Rated Movies">
+                    <button id="load-more-top-rated-movies" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Load more Top Rated Movies">
                         Load More
                     </button>
                 </div>
@@ -236,31 +241,18 @@
         </div>
     </footer>
 
-    <script type="module">
+    <!-- Memuat config.js sebagai skrip biasa sebelum skrip utama -->
+    <script src="/config.js"></script> 
+
+    <!-- Mengubah type="module" menjadi script biasa agar dapat mengakses variabel global dari config.js -->
+    <script>
         // Application configuration
         const AppConfig = {
             TMDB_BASE_URL: 'https://tmdb-api-proxy-1.musadekakhmad.workers.dev', // Your Cloudflare Worker URL
             TMDB_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p/w500',
             TMDB_PROFILE_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p/w185',
-            ADSTERRA_DIRECT_LINKS: [
-                'https://discreetisabella.com/g77bpz0g?key=f1cc7147d1c59d932b6186896ab8854c',
-                'https://discreetisabella.com/vttzzi1n?key=bfc8d7d57de835830a0d72fbe7a47be1',
-                'https://discreetisabella.com/y5fc24f7?key=d6efa8068c5da148ed5cf346ffa62290',
-                'https://discreetisabella.com/a43vczjf1b?key=70467091cade36a7f916bfe58dc80cff',
-                'https://discreetisabella.com/t71keggw?key=9c6906c82c8eb114e2baef9058f4c4e5',
-                'https://discreetisabella.com/vb5ixea83?key=c4e7438c85503eda026984db5e7aa3c4',              
-                'https://discreetisabella.com/x818nj48?key=db0a9d9fa9d81626b459383a7bdc33ee',
-                'https://discreetisabella.com/gd8bwkyj?key=d2d35cf16f521bf5e9accfdd865dae8f',
-                'https://discreetisabella.com/paij3re0by?key=fa60f72b73c05d987bd978f83a6deaa8',
-                'https://discreetisabella.com/gh4tkda15?key=080742d09d4b5234a4fdaa773e48ebd4',
-                'https://discreetisabella.com/u1ipxidjif?key=bf544685cc418fde38d3de4391de6fee',
-                'https://discreetisabella.com/nu4ravi1cx?key=4d0556009c2d17968977e235d5de925a',
-                'https://discreetisabella.com/wdhedf2wx?key=a2c98838af4390b59e8b7aaaea3f1660',
-                'https://discreetisabella.com/yed8kj7bvw?key=b7830767455354f8e097df2a9e0f040c',
-                'https://discreetisabella.com/w2sw8zgx21?key=d34ca1378210247721e98e65d20b3693',
-                'https://discreetisabella.com/qn92sfcb?key=a8333f15c6bba15e367a5456f691547c',
-                'https://discreetisabella.com/rz2xzbfm?key=8c4045c97068010d84c3f1002e82b1c9'
-            ]
+            // Menggunakan ADSTERRA_DIRECT_LINKS yang diakses dari objek window
+            ADSTERRA_DIRECT_LINKS: window.ADSTERRA_DIRECT_LINKS || [] // Menambahkan fallback array kosong
         };
 
         // Centralized application state object
@@ -285,6 +277,11 @@
 
         // Function to get the next Adsterra direct link in rotation
         function getNextAdLink() {
+            // FIX: Memastikan ADSTERRA_DIRECT_LINKS ada dan tidak kosong
+            if (!AppConfig.ADSTERRA_DIRECT_LINKS || AppConfig.ADSTERRA_DIRECT_LINKS.length === 0) {
+                console.warn("ADSTERRA_DIRECT_LINKS is not defined or is empty. No ad link available.");
+                return '#'; // Mengembalikan tautan fallback atau kosong
+            }
             const link = AppConfig.ADSTERRA_DIRECT_LINKS[currentAdLinkIndex];
             currentAdLinkIndex = (currentAdLinkIndex + 1) % AppConfig.ADSTERRA_DIRECT_LINKS.length; // Cycle through links
             return link;
@@ -326,7 +323,7 @@
                             delay *= 2; // Exponential backoff
                             continue; // Continue to the next retry attempt
                         } else {
-                            throw new Error(`HTTP error! status: ${response.status} for URL: ${url}`);
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
                     }
                     return response;
@@ -405,7 +402,7 @@
             youMightAlsoLike: "You Might Also Like This:",
             allRightsReserved: "All rights reserved.",
             privacyPolicy: "Privacy Policy",
-            termsOfService: "Terms of Service",
+            termsOfService: "Terms Of Service",
             contactUs: "Contact Us",
             errorTitle: "Error",
             infoTitle: "Info",
@@ -455,6 +452,7 @@
         };
 
         // Hardcoded recommended movies for when no similar titles are found
+        // Dibatasi menjadi 6 film
         const recommendedFallbackMovies = [
             { id: 67308, title: '3-D Sex and Zen: Extreme Ecstasy', release_date: '2011-04-14', poster_path: 'https://image.tmdb.org/t/p/w300/jjADiLOmCoXoVldQYrNR9bdAWA0.jpg' },
             { id: 575299, title: 'Fidelity', release_date: '2019-09-06', poster_path: 'https://image.tmdb.org/t/p/w300/kDaRVADrrbwNSGzCvU4AroEa6h1.jpg' },
@@ -671,8 +669,8 @@
                     noResultsMessageStaticGrid.textContent = TEXT_CONSTANTS.noResultsFound;
                 } else {
                     noResultsMessageStaticGrid.classList.add('hidden');
-                    // Limit to 12 items for the "You Might Also Like This" section
-                    data.results.slice(0, 12).forEach(media => {
+                    // Limit to 6 items for the "You Might Also Like This" section
+                    data.results.slice(0, 6).forEach(media => {
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
                         mediaCard.dataset.mediaId = media.id;
@@ -694,7 +692,6 @@
 
                         mediaCard.addEventListener('click', () => {
                             triggerAd();
-                            // Use conditional history.pushState for cleaner URLs
                             const newPath = `/movies/media/movie/${media.id}/${slugify(titleOrName)}`;
                             if (isSandboxEnvironment()) {
                                 window.location.hash = newPath.replace('/movies', '');
@@ -715,6 +712,75 @@
             }
         }
 
+        /**
+         * Updates the document's meta tags and injects Schema.org JSON-LD for SEO.
+         * This is crucial for dynamic content pages.
+         * @param {Object} media - The media object (movie or TV show).
+         * @param {string} mediaType - 'movie' or 'tv'.
+         * @param {Object} creditsData - Credits data for director/cast.
+         * @param {string} contentRating - The content rating (e.g., 'PG-13').
+         * @param {string} trailerKey - YouTube key for the trailer.
+         */
+        function updatePageMetadata(media, mediaType, creditsData, contentRating, trailerKey) {
+            const title = media.title || media.name || TEXT_CONSTANTS.titleNotAvailable;
+            const description = media.overview || TEXT_CONSTANTS.plotNotAvailable;
+            const imageUrl = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : 'https://placehold.co/1200x630/374151/d1d5db?text=Erica+Filme';
+            const currentUrl = window.location.href;
+
+            // Update <title>
+            document.title = `${title} - Erica Filme ${mediaType === 'movie' ? 'Movies' : 'TV Series'}`;
+
+            // Update <meta name="description">
+            document.querySelector('meta[name="description"]').setAttribute('content', description);
+
+            // Update Open Graph tags
+            document.querySelector('meta[property="og:title"]').setAttribute('content', `${title} - Erica Filme ${mediaType === 'movie' ? 'Movies' : 'TV Series'}`);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', description);
+            document.querySelector('meta[property="og:image"]').setAttribute('content', imageUrl);
+            document.querySelector('meta[property="og:url"]').setAttribute('content', currentUrl);
+
+            // Update Canonical tag
+            document.querySelector('link[rel="canonical"]').setAttribute('href', currentUrl);
+
+            // Inject Schema.org JSON-LD
+            const existingSchema = document.querySelector('script[type="application/ld+json"]');
+            if (existingSchema) existingSchema.remove(); // Remove old schema if exists
+
+            const director = creditsData.crew.find(person => person.job === 'Director');
+            const directorName = director ? director.name : undefined;
+            const cast = creditsData.cast.slice(0, 5).map(person => ({ "@type": "Person", "name": person.name }));
+
+            const schemaData = {
+                "@context": "http://schema.org",
+                "@type": mediaType === 'movie' ? "Movie" : "TVSeries",
+                "name": title,
+                "description": description,
+                "image": imageUrl,
+                "url": currentUrl,
+                "datePublished": media.release_date || media.first_air_date,
+                "director": directorName ? { "@type": "Person", "name": directorName } : undefined,
+                "actor": cast.length > 0 ? cast : undefined,
+                "aggregateRating": media.vote_average ? {
+                    "@type": "AggregateRating",
+                    "ratingValue": media.vote_average.toFixed(1),
+                    "ratingCount": media.vote_count
+                } : undefined,
+                "contentRating": contentRating !== TEXT_CONSTANTS.notAvailable ? contentRating : undefined,
+                "trailer": trailerKey ? {
+                    "@type": "VideoObject",
+                    "name": `${title} Trailer`,
+                    "description": `Official trailer for ${title}`,
+                    "uploadDate": new Date().toISOString().split('T')[0], // Or actual upload date if available
+                    "embedUrl": `https://www.youtube.com/embed/${trailerKey}`,
+                    "thumbnailUrl": `https://img.youtube.com/vi/${trailerKey}/hqdefault.jpg`
+                } : undefined
+            };
+
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(schemaData, null, 2); // Pretty print for readability
+            document.head.appendChild(script);
+        }
 
         // Function to fetch and display movie details (Layer 2)
         async function fetchAndDisplayMediaDetail(mediaId, mediaType, mediaTitleForSlug = '') {
@@ -737,11 +803,18 @@
             loadingSpinnerLayer2.classList.remove('hidden');
 
             try {
-                const detailResponse = await fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].detail}${mediaId}?language=en`);
-                if (!detailResponse.ok) {
-                    throw new Error(`HTTP error! status: ${detailResponse.status}`);
-                }
+                // Parallel API calls for performance improvement
+                const [detailResponse, videoResponse, creditsResponse, releaseDatesResponse] = await Promise.all([
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].detail}${mediaId}?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].videos}${mediaId}/videos?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].credits}${mediaId}/credits?language=en`),
+                    fetchWithRetry(`${AppConfig.TMDB_BASE_URL}/movie/${mediaId}/release_dates`)
+                ]);
+
                 const media = await detailResponse.json();
+                const videosData = await videoResponse.json();
+                const creditsData = await creditsResponse.json();
+                const releaseDatesData = await releaseDatesResponse.json();
 
                 // Update URL using conditional history.replaceState
                 const mediaSlug = slugify(media.title || media.name || TEXT_CONSTANTS.titleNotAvailable);
@@ -757,12 +830,6 @@
                     }
                 }
 
-                const videoResponse = await fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].videos}${mediaId}/videos?language=en`);
-                if (!videoResponse.ok) {
-                    throw new Error(`HTTP error! status: ${videoResponse.status}`);
-                }
-                const videosData = await videoResponse.json();
-
                 let trailer = videosData.results.find(vid => vid.type === 'Trailer' && vid.site === 'YouTube');
                 
                 // Fallback: if no specific 'Trailer' type is found, try any YouTube video
@@ -773,25 +840,15 @@
                 // Using a relevant movie trailer compilation as fallback if no specific trailer is found
                 const trailerUrl = trailer ? `https://www.youtube.com/embed/${trailer.key}` : 'https://www.youtube.com/embed/DmwYqQki_Ic';
 
-                const creditsResponse = await fetchWithRetry(`${AppConfig.TMDB_BASE_URL}${mediaTypeEndpoints[mediaType].credits}${mediaId}/credits?language=en`);
-                if (!creditsResponse.ok) {
-                    throw new Error(`HTTP error! status: ${creditsResponse.status}`);
-                }
-                const creditsData = await creditsResponse.json();
-                
                 const director = creditsData.crew.find(person => person.job === 'Director');
                 const directorName = director ? director.name : TEXT_CONSTANTS.notAvailable;
                 const cast = creditsData.cast.slice(0, 5).map(person => person.name).join(', '); // Top 5 cast members
 
                 // Fetch content rating
                 let contentRating = TEXT_CONSTANTS.notAvailable;
-                const releaseDatesResponse = await fetchWithRetry(`${AppConfig.TMDB_BASE_URL}/movie/${mediaId}/release_dates`);
-                if (releaseDatesResponse.ok) {
-                    const releaseDatesData = await releaseDatesResponse.json();
-                    const usRelease = releaseDatesData.results.find(res => res.iso_3166_1 === 'US');
-                    if (usRelease && usRelease.release_dates.length > 0) {
-                        contentRating = usRelease.release_dates[0].certification || TEXT_CONSTANTS.notAvailable;
-                    }
+                const usRelease = releaseDatesData.results.find(res => res.iso_3166_1 === 'US');
+                if (usRelease && usRelease.release_dates.length > 0) {
+                    contentRating = usRelease.release_dates[0].certification || TEXT_CONSTANTS.notAvailable;
                 }
 
                 // Prepare duration text
@@ -804,6 +861,9 @@
 
                 // Update currentImdbId in appState
                 appState.currentImdbId = media.imdb_id;
+
+                // Update page metadata and inject Schema.org JSON-LD
+                updatePageMetadata(media, mediaType, creditsData, contentRating, trailer ? trailer.key : null);
 
                 // Populate Layer 2 with enhanced details
                 const releaseYear = media.release_date ? media.release_date.substring(0, 4) : TEXT_CONSTANTS.notAvailable;
@@ -863,7 +923,10 @@
          * @param {string} mediaType - 'movie' (always 'movie' for this app).
          */
         async function loadSimilarMedia(mediaId, mediaType) {
-            similarMoviesGrid.innerHTML = ''; // Clear previous similar movies
+            // Clear previous similar movies by removing all child nodes
+            while (similarMoviesGrid.firstChild) {
+                similarMoviesGrid.removeChild(similarMoviesGrid.firstChild);
+            }
             loadingSpinnerSimilar.classList.remove('hidden');
             noSimilarResultsMessage.classList.add('hidden');
 
@@ -875,41 +938,65 @@
                 }
                 const data = await response.json();
 
-                if (data.results.length === 0) {
-                    // If no similar titles found, display hardcoded recommendations
+                let combinedMovies = [];
+                if (data.results.length > 0) {
+                    combinedMovies = data.results;
+                } else {
+                    combinedMovies = recommendedFallbackMovies;
+                }
+
+                // Deduplicate and limit to 6 unique movies
+                const uniqueMoviesMap = new Map();
+                for (const movie of combinedMovies) {
+                    // Use movie.id for deduplication
+                    if (!uniqueMoviesMap.has(movie.id)) {
+                        uniqueMoviesMap.set(movie.id, movie);
+                    }
+                }
+                const moviesToDisplay = Array.from(uniqueMoviesMap.values()).slice(0, 6);
+
+
+                if (moviesToDisplay.length === 0) {
                     noSimilarResultsMessage.classList.remove('hidden');
                     noSimilarResultsMessage.textContent = TEXT_CONSTANTS.noSimilarTitles;
-                    
-                    // Populate with recommended fallback movies
-                    recommendedFallbackMovies.forEach(recMedia => { 
-                        const mediaCard = document.createElement('div');
-                        mediaCard.className = 'bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
-                        mediaCard.dataset.mediaId = recMedia.id;
-                        mediaCard.dataset.mediaType = 'movie'; // Assuming fallback are all movies
-                        mediaCard.setAttribute('aria-label', `Watch ${recMedia.title || recMedia.name}`);
-                        
-                        const posterPath = recMedia.poster_path ? `${recMedia.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
-                        const titleOrName = recMedia.title || recMedia.name || TEXT_CONSTANTS.titleNotAvailable;
-                        const releaseDateOrFirstAirDate = recMedia.release_date ? recMedia.release_date.substring(0, 4) : (recMedia.first_air_date ? recMedia.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable);
+                } else {
+                    noSimilarResultsMessage.classList.add('hidden');
+                    const movieCardsHtml = []; // Use an array to build HTML strings
 
-                        mediaCard.innerHTML = `
-                            <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
-                            <div class="p-4 text-center">
-                                <h3 class="text-lg font-semibold text-gray-100 truncate">${titleOrName}</h3>
-                                <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
+                    moviesToDisplay.forEach(media => {
+                        const posterPath = media.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${media.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
+                        const titleOrName = media.title || media.name || TEXT_CONSTANTS.titleNotAvailable;
+                        const releaseDateOrFirstAirDate = media.release_date ? media.release_date.substring(0, 4) : (media.first_air_date ? media.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable);
+
+                        movieCardsHtml.push(`
+                            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                                 data-media-id="${media.id}"
+                                 data-media-type="${mediaType}"
+                                 aria-label="Watch ${titleOrName}">
+                                <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
+                                <div class="p-4 text-center">
+                                    <h3 class="text-lg font-semibold text-gray-100 truncate">${titleOrName}</h3>
+                                    <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
+                                </div>
                             </div>
-                        `;
-                        similarMoviesGrid.appendChild(mediaCard);
+                        `);
+                    });
+                    similarMoviesGrid.innerHTML = movieCardsHtml.join(''); // Set innerHTML once
 
-                        mediaCard.addEventListener('click', () => {
+                    // Re-attach event listeners after innerHTML update
+                    similarMoviesGrid.querySelectorAll('.bg-gray-800').forEach(card => {
+                        card.addEventListener('click', () => {
                             triggerAd();
-                            const newPath = `/movies/media/movie/${recMedia.id}/${slugify(titleOrName)}`;
+                            const mediaId = card.dataset.mediaId;
+                            const mediaType = card.dataset.mediaType;
+                            const titleForSlug = card.querySelector('h3').textContent; // Get title from rendered card
+                            const newPath = `/movies/media/${mediaType}/${mediaId}/${slugify(titleForSlug)}`;
                             if (isSandboxEnvironment()) {
                                 window.location.hash = newPath.replace('/movies', '');
                             } else {
                                 history.pushState(null, '', newPath);
                             }
-                            handleLocationChange(); // Manually trigger
+                            handleLocationChange();
                         });
                     });
                 }
@@ -1053,7 +1140,7 @@
                         if (isSandboxEnvironment()) {
                             window.location.hash = ''; // Clear hash to default to base
                         } else {
-                            history.replaceState(null, '', appBasePath);
+                            history.pushState(null, '', appBasePath);
                         }
                         handleLocationChange(); // Re-evaluate
                     }
@@ -1062,7 +1149,7 @@
                     if (isSandboxEnvironment()) {
                         window.location.hash = '';
                     } else {
-                        history.replaceState(null, '', appBasePath);
+                        history.pushState(null, '', appBasePath);
                     }
                     handleLocationChange();
                 }
@@ -1206,7 +1293,8 @@
                 } else {
                     genreButtonsContainer.classList.add('hidden'); // Hide if no genres
                 }
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Error fetching genres:', error);
                 showMessageBox('errorTitle', 'failedToLoadMedia', { type: 'genre', error: error.message });
                 genreButtonsContainer.classList.add('hidden');
@@ -1354,7 +1442,12 @@
         // Handle navigation buttons (Movies)
         navHomeButton.addEventListener('click', () => {
             triggerAd();
-            window.location.href = '/'; // Go to the root domain (main landing page)
+            // FIX: Use hash-based navigation for sandbox environment to prevent URL error
+            if (isSandboxEnvironment()) {
+                window.location.hash = ''; // Navigate to the base of the movies app
+            } else {
+                window.location.href = '/'; // Go to the root domain (main landing page)
+            }
         });
 
         navMoviesButton.addEventListener('click', () => {
