@@ -17,12 +17,12 @@
     <meta property="og:image" content="https://live.staticflickr.com/65535/54686927986_3bc07303a2_b.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://ericafilme.pages.dev/">
+    <meta property="og:url" content="https://ericafilme.pages.dev/tvseries/">
     <meta property="og:type" content="website">
     <meta property="fb:app_id" content="61577842845885">
 
     <!-- Canonical Tag for SEO -->
-    <link rel="canonical" href="https://ericafilme.pages.dev/">
+    <link rel="canonical" href="https://ericafilme.pages.dev/tvseries/">
 
     <!-- Tailwind CSS CDN - For production, it's recommended to use a custom Tailwind build and host it locally. -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -226,16 +226,7 @@
                 <p id="no-results-message-static-grid" class="hidden text-center text-gray-400 text-lg mt-8">No results found.</p>
             </div>
         </section>
-
-        <!-- Layer 4: SEO Content -->
-        <section id="layer-4" class="layer-4 px-4 py-12">
-            <button id="back-from-seo-button" class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 text-gray-200 p-2 rounded-full shadow-md transition-colors duration-200" aria-label="Back from SEO content">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            </button>
-            <div id="seo-content" class="layer-4-content">
-                <!-- SEO content will be injected here by JavaScript -->
-            </div>
-        </section>
+        <!-- Layer 4: SEO Content section removed -->
     </main>
 
     <!-- Footer -->
@@ -354,11 +345,11 @@
         const layer1 = document.getElementById('layer-1');
         const layer2 = document.getElementById('layer-2');
         const layer3 = document.getElementById('layer-3');
-        const layer4 = document.getElementById('layer-4');
+        // const layer4 = document.getElementById('layer-4'); // Removed layer4 reference
 
         const backToListButton = document.getElementById('back-to-list-button');
         const backToDetailButton = document.getElementById('back-to-detail-button');
-        const backFromSeoButton = document.getElementById('back-from-seo-button');
+        // const backFromSeoButton = document.getElementById('back-from-seo-button'); // Removed backFromSeoButton reference
 
         const stream1Button = document.getElementById('stream-1-button');
         const stream2Button = document.getElementById('stream-2-button');
@@ -502,7 +493,7 @@
             layer1.style.display = 'none';
             layer2.style.display = 'none';
             layer3.style.display = 'none';
-            layer4.style.display = 'none';
+            // layer4.style.display = 'none'; // Removed layer4 reference
             layerToShow.style.display = 'block';
             window.scrollTo(0, 0); // Scroll to top when changing layers
         }
@@ -894,34 +885,6 @@
                             window.location.hash = `#/media/tv/${recMedia.id}/${slugify(titleOrName)}`;
                         });
                     });
-
-                } else {
-                    // Ensure only 6 items are displayed for similar TV series
-                    data.results.slice(0, 6).forEach(similarMedia => { 
-                        const mediaCard = document.createElement('div');
-                        mediaCard.className = 'bg-gray-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
-                        mediaCard.dataset.mediaId = similarMedia.id;
-                        mediaCard.dataset.mediaType = mediaType;
-                        mediaCard.setAttribute('aria-label', `Watch ${similarMedia.name}`);
-                        
-                        const posterPath = similarMedia.poster_path ? `${AppConfig.TMDB_IMAGE_BASE_URL}${similarMedia.poster_path}` : `https://placehold.co/500x750/FF0000/FFFFFF?text=${TEXT_CONSTANTS.posterNotAvailable}`;
-                        const titleOrName = similarMedia.name || TEXT_CONSTANTS.titleNotAvailable;
-                        const releaseDateOrFirstAirDate = similarMedia.first_air_date ? similarMedia.first_air_date.substring(0, 4) : TEXT_CONSTANTS.yearNotAvailable;
-
-                        mediaCard.innerHTML = `
-                            <img src="${posterPath}" alt="${titleOrName} Poster" loading="lazy" class="w-full h-auto object-cover rounded-t-lg" onerror="this.src='https://placehold.co/300x450/FF0000/FFFFFF?text=${TEXT_CONSTANTS.imageError}';" width="500" height="750">
-                            <div class="p-4 text-center">
-                                <h3 class="text-lg font-semibold text-gray-100 truncate">${titleOrName}</h3>
-                                <p class="text-gray-400 text-sm">${releaseDateOrFirstAirDate}</p>
-                            </div>
-                        `;
-                        similarMoviesGrid.appendChild(mediaCard);
-
-                        mediaCard.addEventListener('click', () => {
-                            triggerAd();
-                            window.location.hash = `#/media/tv/${similarMedia.id}/${slugify(titleOrName)}`;
-                        });
-                    });
                 }
             } catch (error) {
                 console.error(`Error fetching similar media from ${similarUrl}:`, error); // Updated error message
@@ -1044,9 +1007,8 @@
                 loadAllTvSections(); // This will reset page counters and load TV sections
                 showLayer(layer1);
             } else if (hash === '' || hash === '#') { // If hash is empty or just '#'
-                showLayer(layer4);
-                genreButtonsContainer.classList.add('hidden'); // Hide genre buttons
-                loadSeoContent();
+                // If no specific hash, default to showing Layer 1 (TV series list)
+                window.location.hash = '#/tv'; // Redirect to the tv hash to ensure proper loading
             } else {
                 // Any other unrecognized hash, default to TV series home
                 window.location.hash = '#/tv';
@@ -1159,10 +1121,7 @@
             document.getElementById('streaming-player-container').classList.add('hidden');
         });
 
-        backFromSeoButton.addEventListener('click', () => {
-            // Always return to TV series list for this app
-            window.location.hash = '#/tv';
-        });
+        // backFromSeoButton removed as Layer 4 is removed
 
         stream1Button.addEventListener('click', () => {
             triggerAd();
@@ -1196,11 +1155,7 @@
         const debouncedSearch = debounce(() => {
             const query = searchInput.value.trim();
             if (query) {
-                // If currently on Layer 4 (SEO content), switch to Layer 1 before displaying search results
-                if (layer4.style.display === 'block') {
-                    showLayer(layer1);
-                }
-
+                // Layer 4 is removed, so no need to check or switch from it
                 appState.currentGenreId = null; // Clear genre filter
                 appState.currentSearchQuery = query;
                 
@@ -1243,14 +1198,8 @@
             // Set language to English by default
             document.documentElement.lang = 'en';
 
-            // Check if there's an existing hash or if it's just '#'
-            if (!window.location.hash || window.location.hash === '#') {
-                showLayer(layer4);
-                loadSeoContent();
-            } else {
-                // If there's an existing hash (e.g., direct link to a TV series), handle it normally
-                handleHashChange();
-            }
+            // Always default to TV series list (Layer 1) on initial load for this specific app
+            window.location.hash = '#/tv'; // Ensure hash is set for proper routing
         };
 
         // Add event listener for hash changes
@@ -1259,7 +1208,7 @@
         // Handle navigation buttons (TV Series)
         navHomeButton.addEventListener('click', () => {
             triggerAd();
-            window.location.hash = ''; // Go to SEO content (Layer 4)
+            window.location.href = '/'; // Go to the root domain (main landing page)
         });
 
         // Removed navMoviesButton event listener
@@ -1272,76 +1221,7 @@
             window.location.hash = '#/tv'; // Go to TV series list (Layer 1)
         });
 
-        // Function to load the SEO content into Layer 4
-        function loadSeoContent() {
-            const seoContentDiv = document.getElementById('seo-content');
-            seoContentDiv.innerHTML = `
-                <h1 class="text-indigo-400" style="font-size: 33px;">Welcome to Erica Filme: Your Ultimate Free Streaming Destination 📺</h1>
-                <img id="seo-banner-image" src="https://live.staticflickr.com/65535/54686927986_3bc07303a2_b.jpg" alt="Erica Filme Banner" class="w-full h-auto object-cover mb-6 rounded-lg cursor-pointer" width="1200" height="630">
-                <p>In an era where entertainment is at our fingertips, finding a reliable and <strong class="text-green-400">free streaming platform</strong> can be a game-changer. Look no further than <strong>Erica Filme</strong>, your premier online destination for thousands of <strong class="text-green-400">free TV series</strong>. We are dedicated to providing an unparalleled streaming experience, offering a vast library of content in <strong class="text-blue-400">high-definition quality</strong>, all without the need for subscriptions, hidden fees, or annoying sign-ups. Dive into the world of <strong class="text-purple-400">unlimited entertainment</strong> and discover why Erica Filme is quickly becoming the go-to choice for viewers across the United Kingdom and beyond. Start <strong class="text-yellow-400">watching today</strong>!</p>
-
-                <h2 class="text-blue-400">The Evolution of Free Online Streaming: Why Erica Filme Stands Out ⭐</h2>
-                <p>The landscape of online entertainment has evolved dramatically over the past decade. From traditional cable TV to paid streaming giants, consumers now have more choices than ever. However, the rising costs of multiple subscriptions can quickly add up, leaving many searching for viable, <strong class="text-green-400">free alternatives</strong>. This is where platforms like Erica Filme step in, democratizing access to a world of television content.</p>
-                <h3 class="text-rose-400">Action & Adventure: Get Your Adrenaline Fix 💥</h3>
-                <p>For those who crave excitement, our <strong class="text-rose-400">action and adventure</strong> categories are brimming with high-octane thrillers, epic quests, and superhero sagas. Experience explosive car chases, intense fight sequences, and breathtaking special effects, all from the comfort of your home. Discover titles that will keep you on the edge of your seat, from espionage thrillers to fantastical journeys.</p>
-                <h3 class="text-yellow-400">Comedy: Laugh Out Loud 😂</h3>
-                <p>Need a good laugh? Our <strong class="text-yellow-400">comedy</strong> section offers a wide array of TV shows designed to lighten your mood. From witty romantic comedies to slapstick farces and dark satires, you'll find endless opportunities for amusement. Gather your friends and family for a night of laughter with our diverse comedic offerings.</p>
-                <h3 class="text-indigo-400">Drama: Explore Human Emotions 🎭</h3>
-                <p>Delve into the complexities of the human experience with our extensive <strong class="text-indigo-400">drama</strong> collection. TV series in this category offer compelling narratives, powerful performances, and often explore profound themes. Whether you prefer historical dramas, legal thrillers, or poignant character studies, our drama category provides rich storytelling that resonates deeply.</p>
-                <h3 class="text-purple-400">Horror & Thriller: A Frighteningly Good Time 👻</h3>
-                <p>If you enjoy a good scare or a suspenseful plot, our <strong class="text-purple-400">horror and thriller</strong> genres are perfect for you. From psychological thrillers that mess with your mind to supernatural horrors that make you jump, prepare for an unforgettable viewing experience. Our collection includes both modern masterpieces and cult classics that will keep you awake at night.</p>
-                <h3 class="text-teal-400">Sci-Fi & Fantasy: Journey Beyond Imagination 🚀</h3>
-                <p>Escape to other worlds and explore futuristic possibilities with our <strong class="text-teal-400">science fiction and fantasy</strong> TV series. Witness groundbreaking visual effects, innovative concepts, and imaginative storytelling. From dystopian futures to magical realms, these genres push the boundaries of creativity and offer truly immersive experiences.</p>
-                <h3 class="text-pink-400">Romance: For the Heart ❤️</h3>
-                <p>Indulge in heartwarming tales of love, passion, and relationships with our <strong class="text-pink-400">romance TV series</strong> selection. Whether you prefer classic love stories, contemporary romantic comedies, or intense romantic dramas, our collection is designed to stir your emotions and leave you feeling uplifted.</p>
-
-                <h2 class="text-green-400">Movies (Not Available on this App) 🎬</h2>
-                <p>Please note that this particular application of Erica Filme is dedicated solely to TV series. For movies, please visit our dedicated movie application.</p>
-
-                <h2 class="text-orange-400">Seamless Streaming Experience: Technology at Your Service ⚡</h2>
-                <p>We understand that a great streaming experience goes beyond just content. That's why Erica Filme is built on robust technology designed for <strong class="text-orange-400">seamless, uninterrupted viewing</strong>:</p>
-                <ul class="list-disc list-inside text-gray-300">
-                    <li><strong>Fast Loading Times:</strong> Minimize buffering and start watching your chosen title almost instantly.</li>
-                    <li><strong>Adaptive Streaming:</strong> Our player adjusts video quality based on your internet connection, ensuring smooth playback even with varying bandwidth.</li>
-                    <li><strong>Intuitive Player Controls:</strong> Easy-to-use controls for play, pause, volume, and full-screen mode enhance your viewing comfort.</li>
-                    <li><strong>Regular Updates:</strong> Our technical team continuously works to improve the platform, fix bugs, and enhance performance, ensuring a cutting-edge streaming service.</li>
-                </ul>
-
-                <h2 class="text-cyan-400">Safety and Accessibility: Your Peace of Mind 🔒</h2>
-                <p>Your safety and privacy are paramount at Erica Filme. We strive to provide a <strong class="text-cyan-400">secure environment</strong> for your entertainment:</p>
-                <ul class="list-disc list-inside text-gray-300">
-                    <li><strong>No Registration Required:</strong> Enjoy content without the need to create an account, protecting your personal information.</li>
-                    <li><strong>Minimal Ads:</strong> While we rely on ads to keep our service free, we aim to keep them as unobtrusive as possible, ensuring they don't significantly disrupt your viewing.</li>
-                    <li><strong>Mobile-Friendly Design:</strong> Our website is fully responsive, adapting perfectly to any screen size, from smartphones to large desktop monitors. This means you can enjoy your favorite TV series and shows on the go, anytime, anywhere.</li>
-                </ul>
-
-                <h2 class="text-lime-400">How to Get Started with Erica Filme 🚀</h2>
-                <p>Getting started with Erica Filme is incredibly simple. Follow these easy steps to begin your <strong class="text-lime-400">free streaming journey</strong>:</p>
-                <ol class="list-decimal list-inside text-gray-300">
-                    <li><strong>Visit Our Website:</strong> Navigate to <a href="https://ericafilme.pages.dev/" class="text-blue-400 hover:underline">https://ericafilme.pages.dev/</a> in your web browser.</li>
-                    <li><strong>Browse or Search:</strong> Use our intuitive search bar to find specific titles or explore our categories and curated lists.</li>
-                    <li><strong>Select Your Content:</strong> Click on the TV series you wish to watch.</li>
-                    <li><strong>Start Streaming:</strong> Choose a streaming server (Stream 1 or Stream 2) and enjoy your <strong class="text-lime-400">free entertainment</strong>!</li>
-                </ol>
-                <p>It's that easy! No complicated sign-ups, no credit card details, just pure, unadulterated entertainment.</p>
-
-                <h2 class="text-fuchsia-400">Future of Erica Filme 🌟</h2>
-                <p>We are continuously working to expand our content library, improve streaming quality, and enhance the user experience. Our commitment is to remain a leading <strong class="text-fuchsia-400">free streaming platform</strong>, adapting to the evolving needs of our audience and the digital landscape. We value your feedback and are always looking for ways to make Erica Filme even better.</p>
-
-                <h2 class="text-red-400">Conclusion: Your Gateway to Free Entertainment 🍿</h2>
-                <p>Erica Filme is more than just a streaming site; it's a gateway to a world of <strong class="text-red-400">free, high-quality entertainment</strong>. With an ever-growing collection of <strong class="text-red-400">TV series</strong>, a user-friendly interface, and a commitment to seamless streaming, we invite you to explore our platform. Say goodbye to subscription fees and hello to <strong class="text-red-400">unlimited entertainment</strong>. Start watching today and experience the best of online streaming, completely free!</p>
-            `;
-
-            // Add event listener to the image after it's in the DOM
-            const seoBannerImage = document.getElementById('seo-banner-image');
-            if (seoBannerImage) {
-                seoBannerImage.addEventListener('click', () => {
-                    triggerAd(); // Trigger ad on SEO banner image click
-                    // Subsequent clicks: navigate to Layer 1 (TV series home)
-                    window.location.hash = '#/tv'; // This will trigger handleHashChange to load TV series
-                });
-            }
-        }
+        // loadSeoContent function removed as Layer 4 is removed
     </script>
 </body>
 </html>
